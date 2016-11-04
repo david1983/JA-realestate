@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "305318716401",
+    "firebase_url": "https://jarealestate-260e9.firebaseio.com",
+    "project_id": "jarealestate-260e9",
+    "storage_bucket": "jarealestate-260e9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:305318716401:android:4b2eb1a3a09fb5bb",
+        "android_client_info": {
+          "package_name": "uk.co.davideandreazzini.jarealestate"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "305318716401-b883t4ofqn1ls9m40fnv14au11a95o18.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "uk.co.davideandreazzini.jarealestate",
+            "certificate_hash": "3E46EB6C7831129546F24C5F136AC92131A792AB"
+          }
+        },
+        {
+          "client_id": "305318716401-tt2b4fd27un13f6ug7d0t7skukmal4ul.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "uk.co.davideandreazzini.jarealestate",
+            "certificate_hash": "E691B647A24971BE8EA4CF25468D5AC44EDD3C72"
+          }
+        },
+        {
+          "client_id": "305318716401-op5i9cdoh87cbt5rccrnuo5dmmpc3pkg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9uaGLJLw5fiB-9PimNIXTwPuPb-R-Fac"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "305318716401-op5i9cdoh87cbt5rccrnuo5dmmpc3pkg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
