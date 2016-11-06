@@ -3,21 +3,25 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home"
+            android:title="Home" />
+        <item
             android:id="@+id/nav_buy"
-            android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:icon="@drawable/coins"
+            android:title="Buy properties" />
         <item
             android:id="@+id/nav_rent"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:icon="@drawable/key"
+            android:title="Rent properties" />
         <item
             android:id="@+id/nav_sell"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:icon="@drawable/shop"
+            android:title="Sell properties" />
         <item
             android:id="@+id/nav_about"
-            android:icon="@android:drawable/ic_menu_info_details"
-            android:title="Tools" />
+            android:icon="@drawable/map"
+            android:title="About us" />
     </group>
 
     <item android:title="User">
@@ -25,11 +29,11 @@
             <item
                 android:id="@+id/nav_login"
                 android:icon="@android:drawable/ic_lock_idle_lock"
-                android:title="Share" />
+                android:title="Login" />
             <item
                 android:id="@+id/nav_logout"
                 android:icon="@android:drawable/ic_menu_myplaces"
-                android:title="Send" />
+                android:title="Logout" />
         </menu>
     </item>
 

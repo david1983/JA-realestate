@@ -6,9 +6,32 @@
     android:layout_width="match_parent"
     card_view:cardCornerRadius="4dp"
     android:layout_margin="10dp">
-    <TextView
-        android:id="@+id/text_cardview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="20dp" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            card_view:srcCompat="@drawable/house"
+            android:id="@+id/property_image" />
+        <TextView
+            android:id="@+id/text_cardview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:text="Test title"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="view details"
+            android:id="@+id/propDetailsBtn"/>
+    </LinearLayout>
+
+
+
+
+
 </android.support.v7.widget.CardView>
