@@ -5,19 +5,88 @@
     android:id="@+id/content_property"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="uk.co.davideandreazzini.jarealestate.PropertyActivity"
     tools:showIn="@layout/activity_property">
 
-    <TextView
-        android:text="Property View"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/textView3" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:id="@+id/PropertyMainImg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/house"
+                    android:adjustViewBounds="true"/>
+                <TextView
+                    android:layout_gravity="bottom"
+                    android:id="@+id/PropertyTitle"
+                    android:padding="16dp"
+                    android:textColor="#fff"
+                    android:textSize="25dp"
+                    android:shadowColor="#333"
+                    android:textStyle="bold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Property Title"/>
+            </FrameLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:padding="5dp"
+                    android:text="Brief summary of the property"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/PropertySummary" />
+                <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="match_parent">
+                    <TableRow >
+                        <TextView
+                            android:padding="5dp"
+                            android:layout_column="0"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:id="@+id/PropertyAddress"
+                            android:text="Address: dsadsads ad sa dsa d sa dsa  dsa dsa d sa"/>
+                        <TextView
+                            android:padding="5dp"
+                            android:layout_column="1"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:id="@+id/PropertyBedrooms"
+                            android:text="Bedrooms:"/>
+                    </TableRow>
+
+                    <TableRow>
+                        <TextView
+                            android:padding="5dp"
+                            android:layout_width="0dp"
+                            android:layout_weight="50"
+                            android:text="Type:"
+                            android:id="@+id/PropertyType"/>
+                        <TextView
+                            android:padding="5dp"
+                            android:layout_width="0dp"
+                            android:layout_weight="50"
+                            android:text="Price:"
+                            android:id="@+id/PropertyPrice"/>
+                    </TableRow>
+                </TableLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
 </RelativeLayout>

@@ -2,6 +2,7 @@ package uk.co.davideandreazzini.jarealestate;
 
 import android.content.res.Configuration;
 import android.graphics.Point;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Display;
@@ -42,6 +43,9 @@ public class MainActivity extends BaseActivity {
             mVideoView  = (VideoView) findViewById(R.id.videoView);
             Uri uri=Uri.parse("android.resource://"+getPackageName()+ "/" + R.raw.video);
             mVideoView.setVideoURI(uri);
+            mVideoView.setOnPreparedListener(mp->{
+                mp.setVolume(0,0);
+            });
             mVideoView.start();
         }
     }
