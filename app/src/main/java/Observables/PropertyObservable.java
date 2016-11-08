@@ -1,7 +1,5 @@
 package Observables;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import com.google.firebase.database.DataSnapshot;
@@ -10,11 +8,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 
-import Helpers.utils;
 import Models.Property;
 import db.FirebaseH;
 import rx.Observable;

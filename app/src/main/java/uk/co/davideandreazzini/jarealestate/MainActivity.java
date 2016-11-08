@@ -1,20 +1,10 @@
 package uk.co.davideandreazzini.jarealestate;
 
 import android.content.res.Configuration;
-import android.graphics.Point;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Display;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.MediaController;
-import android.widget.Toast;
 import android.widget.VideoView;
-
-import Models.IntentExtras;
 
 public class MainActivity extends BaseActivity {
 

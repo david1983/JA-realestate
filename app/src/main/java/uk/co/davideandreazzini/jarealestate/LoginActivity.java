@@ -2,7 +2,6 @@ package uk.co.davideandreazzini.jarealestate;
 
 import android.os.Bundle;
 
-import fragments.LoginFragment;
 import fragments.StartFragment;
 
 

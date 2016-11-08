@@ -4,9 +4,6 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-
 import db.FirebaseH;
 import uk.co.davideandreazzini.jarealestate.R;
 
