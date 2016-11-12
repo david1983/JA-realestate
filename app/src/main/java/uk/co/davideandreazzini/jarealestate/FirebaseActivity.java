@@ -4,12 +4,16 @@ package uk.co.davideandreazzini.jarealestate;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 
@@ -23,14 +27,14 @@ import db.FirebaseH;
 public class FirebaseActivity extends AppCompatActivity {
 
     FirebaseH db = FirebaseH.getInstance();
-    FirebaseUser user;
+    FirebaseUser user = db.user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
-        user = db.user;
+
     }
 
     public void setToolbar(){
@@ -42,9 +46,6 @@ public class FirebaseActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-
-
-
     }
 
     @Override
@@ -53,7 +54,6 @@ public class FirebaseActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
             finish(); // close this activity and return to preview activity (if there is any)
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -82,6 +82,5 @@ public class FirebaseActivity extends AppCompatActivity {
             db.mAuth.removeAuthStateListener(db.mAuthListener);
         }
     }
-
 
 }

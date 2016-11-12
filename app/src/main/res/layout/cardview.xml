@@ -4,31 +4,35 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
     android:layout_width="match_parent"
+    android:layout_gravity="top"
     card_view:cardCornerRadius="4dp"
     android:layout_margin="10dp">
-    <LinearLayout
+    <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="fitXY"
+            android:layout_height="142dp"
+            android:scaleType="centerCrop"
             android:adjustViewBounds="true"
             card_view:srcCompat="@drawable/house"
             android:id="@+id/property_image" />
         <TextView
             android:id="@+id/text_cardview"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="20dp"
+            android:layout_below="@+id/property_image"
             android:text="Test title"/>
         <Button
+            android:layout_gravity="bottom"
+            android:layout_below="@+id/text_cardview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="view details"
             android:id="@+id/propDetailsBtn"/>
-    </LinearLayout>
+    </RelativeLayout>
 
 
 

@@ -25,12 +25,5 @@ public class FirebaseH {
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         mDb = FirebaseDatabase.getInstance();
         mAuth = FirebaseAuth.getInstance();
-
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                user = firebaseAuth.getCurrentUser();
-            }
-        };
     }
 }

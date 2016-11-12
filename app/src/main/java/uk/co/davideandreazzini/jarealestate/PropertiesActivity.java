@@ -1,6 +1,8 @@
 package uk.co.davideandreazzini.jarealestate;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -33,11 +35,18 @@ public class PropertiesActivity extends BaseActivity {
         progress = (ProgressBar) findViewById(R.id.propprogress);
         myView =  (RecyclerView)findViewById(R.id.recyclerview);
         myView.setAdapter(adapter);
-        LinearLayoutManager llm = new LinearLayoutManager(this);
-        llm.setOrientation(LinearLayoutManager.VERTICAL);
-        myView.setLayoutManager(llm);
+//        LinearLayoutManager llm = new LinearLayoutManager(this);
+//        llm.setOrientation(LinearLayoutManager.VERTICAL);
+//        myView.setLayoutManager(llm);
 
         //Populate the ArrayList with your own values
+        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
+            myView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 2));
+        }
+        else{
+            myView.setLayoutManager(new GridLayoutManager(getApplicationContext(), 3));
+        }
+
 
         po = new PropertyObservable(propertyType, 2);
         loadMore();

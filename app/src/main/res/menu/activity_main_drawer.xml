@@ -19,9 +19,9 @@
             android:icon="@drawable/shop"
             android:title="Sell properties" />
         <item
-            android:id="@+id/nav_about"
+            android:id="@+id/nav_map"
             android:icon="@drawable/map"
-            android:title="About us" />
+            android:title="map" />
     </group>
 
     <item android:title="User">

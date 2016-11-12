@@ -43,13 +43,6 @@ public class LoginFragment extends routedFragment {
                 .requestEmail()
                 .build();
 
-//        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-//                .enableAutoManage(getActivity() /* FragmentActivity */,
-//                        getActivity() /* OnConnectionFailedListener */)
-//                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-//                .build();
-
-
         final EditText email = (EditText) getView().findViewById(uk.co.davideandreazzini.jarealestate.R.id.inputEmail);
         final EditText password = (EditText) getView().findViewById(uk.co.davideandreazzini.jarealestate.R.id.inputPassword);
 
@@ -91,6 +84,8 @@ public class LoginFragment extends routedFragment {
                             Log.w("INFO", "signInWithEmail:failed", task.getException());
                             Toast.makeText(getActivity(), task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
+                        }else{
+                            getActivity().finish();
                         }
 
                         // ...
@@ -113,6 +108,8 @@ public class LoginFragment extends routedFragment {
                         if (!task.isSuccessful()) {
                             Toast.makeText(getActivity(), task.getException().getMessage(),
                                     Toast.LENGTH_SHORT).show();
+                        }else{
+                            getActivity().finish();
                         }
                         // ...
                     }

@@ -51,7 +51,6 @@ public class googleSignIn extends FragmentActivity
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        signIn();
     }
 
     private void signIn() {

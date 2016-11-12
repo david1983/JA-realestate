@@ -1,5 +1,6 @@
 package fragments;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,6 +24,7 @@ import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 
+import uk.co.davideandreazzini.jarealestate.LoginActivity;
 import uk.co.davideandreazzini.jarealestate.R;
 
 /**
@@ -93,8 +95,10 @@ public class StartFragment extends routedFragment {
     }
 
     public void googleLoginFn(){
-//        Intent intent = new Intent(getActivity(), googleSignIn.class);
-//        startActivity(intent);
+        Activity a = getActivity();
+        if(a instanceof LoginActivity){
+            ((LoginActivity) a).signIn();
+        }
     }
 
     private void handleFacebookAccessToken(AccessToken token) {
