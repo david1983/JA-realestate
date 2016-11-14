@@ -62,14 +62,6 @@ public class BaseActivity extends FirebaseActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        db.mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                user = firebaseAuth.getCurrentUser();
-                mObservable.onNext(user);
-            }
-        };
-
     }
 
 
@@ -166,11 +158,11 @@ public class BaseActivity extends FirebaseActivity
         } else if (id == R.id.nav_home) {
             goTo(new MainActivity(),null);
         } else if (id == R.id.nav_login) {
-            if(db.user==null){
+            if(user==null){
                 goTo(new LoginActivity(), null);
             }else{
                 db.mAuth.signOut();
-                db.user = null;
+                user = null;
                 setUserDrawer(null);
             }
         }

@@ -1,5 +1,6 @@
 package uk.co.davideandreazzini.jarealestate;
 
+import android.annotation.SuppressLint;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import Models.IntentExtras;
 import Models.Property;
 import rx.Observable;
 import rx.Subscriber;
@@ -29,6 +31,17 @@ import rx.schedulers.Schedulers;
 
 public class MapActivity extends BaseActivity {
     GoogleMap map;
+
+    private class propMarker{
+        Property prop;
+        Marker propMarker;
+        public propMarker(Property prop, Marker propMarker) {
+            this.prop = prop;
+            this.propMarker = propMarker;
+        }
+    }
+
+    ArrayList<propMarker> arrProp = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +58,7 @@ public class MapActivity extends BaseActivity {
         });
     }
 
+    @SuppressLint("NewApi")
     protected void getProp(String type){
         Observable.create(new Observable.OnSubscribe<ArrayList<Property>>(){
             @Override
@@ -57,6 +71,8 @@ public class MapActivity extends BaseActivity {
                         ArrayList<Property> arrProp = new ArrayList<Property>();
                         for(DataSnapshot propSnapshot: dataSnapshot.getChildren()){
                             Property prop = propSnapshot.getValue(Property.class);
+                            prop.key = propSnapshot.getKey();
+                            prop.type=type;
                             prop.setCoords(prop.parseCoord(propSnapshot.child("lat")), prop.parseCoord(propSnapshot.child("lng")));
                             if(!prop.coords.equals(new LatLng(0,0)))
                                 arrProp.add(prop);
@@ -72,27 +88,33 @@ public class MapActivity extends BaseActivity {
                 });
             }
         }).subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(properties -> {
-                    if(map==null) return;
-                    BitmapDescriptor markerType = (type=="BUY") ?
-                            BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE) :
-                            BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE);
-                    for(Property prop : properties){
-                        map.addMarker(new MarkerOptions()
-                                .position(prop.coords)
-                                .title(prop.propertyTypeFullDescription)
-                                .icon(markerType)
-                        );
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(properties -> {
+                if(map==null) return;
+                BitmapDescriptor markerType = (type=="BUY") ?
+                        BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE) :
+                        BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE);
+                for(Property prop : properties){
+                    Marker m = map.addMarker(new MarkerOptions()
+                            .position(prop.coords)
+                            .title(prop.propertyTypeFullDescription)
+                            .icon(markerType));
+                    propMarker p = new propMarker(prop, m);
+                    arrProp.add(p);
+                }
+                if(properties.size() ==0) return;
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(properties.get(0).coords , 13));
+                map.setOnInfoWindowClickListener(marker -> {
+                    for(propMarker p: arrProp){
+                        if(p.propMarker.equals(marker)){
+                            ArrayList<IntentExtras> extras = new ArrayList<IntentExtras>();
+                            extras.add(new IntentExtras("property", p.prop.key));
+                            extras.add(new IntentExtras("collection", p.prop.type));
+                            goTo(new PropertyActivity(), extras);
+                        }
                     }
-                    if(properties.size() ==0) return;
-
-                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(properties.get(0).coords , 13));
-                    map.setOnMarkerClickListener(marker->{
-
-                        return false;
-                    });
                 });
+            });
 
     }
 }

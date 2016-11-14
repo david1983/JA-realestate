@@ -27,13 +27,19 @@ import db.FirebaseH;
 public class FirebaseActivity extends AppCompatActivity {
 
     FirebaseH db = FirebaseH.getInstance();
-    FirebaseUser user = db.user;
+    FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
+        db.mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                user = firebaseAuth.getCurrentUser();
+            }
+        };
 
     }
 
