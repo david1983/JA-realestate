@@ -57,12 +57,7 @@ public class PropertyObservable implements Observable.OnSubscribe<ArrayList<Prop
         ValueEventListener vel = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Integer n=0;
                 for (DataSnapshot property: dataSnapshot.getChildren()){
-                    if(n==0) {
-                        n++;
-                        continue;
-                    }
                     Property prop = Property.fromSnapShot(property, collection);
                     lastKey = prop.amount;
                     arrProperty.add(prop);

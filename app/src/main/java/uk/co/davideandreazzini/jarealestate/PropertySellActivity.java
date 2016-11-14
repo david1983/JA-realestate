@@ -11,10 +11,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.database.DatabaseReference;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -24,8 +31,10 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Map;
 
 import Helpers.FilePath;
+import Models.Property;
 
 public class PropertySellActivity extends BaseActivity {
 
@@ -33,10 +42,13 @@ public class PropertySellActivity extends BaseActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private String selectedFilePath;
     private String SERVER_URL = "https://www.geekmesh.com/upload.php";
+    private Property prop;
     ImageView ivAttachment;
     Button bUpload;
     TextView tvFileName;
     ProgressDialog dialog;
+    String mainImageSrc = "";
+    String propertyType, propertyFrequency;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,10 +56,69 @@ public class PropertySellActivity extends BaseActivity {
         tvFileName = (TextView) findViewById(R.id.fileNameTxt);
         ivAttachment = (ImageView) findViewById(R.id.fileImage);
         ivAttachment.setOnClickListener(e->onClickImageUpload(ivAttachment));
-
         bUpload = (Button) findViewById(R.id.btnPicture);
         bUpload.setVisibility(View.GONE);
         bUpload.setOnClickListener(e->onClickImageUpload(bUpload));
+
+        final EditText title = (EditText) findViewById(R.id.propertyTitle);
+        final EditText summary = (EditText) findViewById(R.id.propertySummary);
+        final EditText address = (EditText) findViewById(R.id.propertyAddress);
+        final EditText bedrooms = (EditText) findViewById(R.id.PropertyBedrooms);
+        final EditText price = (EditText) findViewById(R.id.propertyPrice);
+
+        Button btnSave = (Button) findViewById(R.id.btnSave);
+        Button btnCancel = (Button) findViewById(R.id.btnCancel);
+
+        Spinner typeSpinner = (Spinner) findViewById(R.id.typeSpinner);
+
+        ArrayAdapter<CharSequence> typeAdapter = ArrayAdapter.createFromResource(this,R.array.propertyType, android.R.layout.simple_spinner_item);
+        typeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        typeSpinner.setAdapter(typeAdapter);
+        typeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                propertyType = adapterView.getItemAtPosition(i).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                propertyType = adapterView.getItemAtPosition(0).toString();
+            }
+        });
+        Spinner frequencySpinner = (Spinner) findViewById(R.id.frequencySpinner);
+
+        ArrayAdapter<CharSequence> frequencyAdapter = ArrayAdapter.createFromResource(this,R.array.paymentFrequency, android.R.layout.simple_spinner_item);
+        frequencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        frequencySpinner.setAdapter(frequencyAdapter);
+        frequencySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                propertyFrequency = adapterView.getItemAtPosition(i).toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                propertyFrequency = adapterView.getItemAtPosition(0).toString();
+            }
+        });
+
+        btnSave.setOnClickListener(e->{
+            Property prop = new Property();
+            prop.displayAddress = address.getText().toString();
+            prop.summary = summary.getText().toString();
+            prop.amount= Long.parseLong(price.getText().toString());
+            prop.bedrooms = Integer.parseInt(bedrooms.getText().toString());
+            prop.propertyTypeFullDescription = title.getText().toString();
+            prop.mainImageSrc = mainImageSrc;
+            prop.type = propertyType;
+            prop.frequency = propertyFrequency;
+            DatabaseReference mRef= db.mDb.getReference(propertyType);
+            String key = mRef.push().getKey();
+            Map<String, Object> propValues = prop.toMap();
+            mRef.child(key).setValue(propValues);
+        });
+
+
     }
 
 
@@ -212,6 +283,7 @@ public class PropertySellActivity extends BaseActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            mainImageSrc = "https://geekmesh.com/uploads/" + fileName;
                             tvFileName.setText("File Upload completed.\n\n You can see the uploaded file here: \n\n" + "http://coderefer.com/extras/uploads/"+ fileName);
                         }
                     });

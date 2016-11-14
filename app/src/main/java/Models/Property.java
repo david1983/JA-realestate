@@ -4,8 +4,11 @@ import android.graphics.Bitmap;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.Exclude;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import Helpers.utils;
 
@@ -51,5 +54,24 @@ public class Property {
         prop.type=collection;
         return prop;
     }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+
+        String displayFrequency = (type=="BUY") ? "" :(frequency=="Weekly") ? "pcw" : "pcm";
+        result.put("propertyTypeFullDescription", propertyTypeFullDescription);
+        result.put("summary", summary);
+        result.put("displayAddress", displayAddress);
+        result.put("amount", amount);
+        result.put("frequency", frequency);
+        result.put("mainImageSrc", mainImageSrc);
+        result.put("type", type);
+        result.put("bedrooms", bedrooms);
+        result.put("displayAmount", "£" + amount + " " + displayFrequency);
+
+        return result;
+    }
+
 
 }
