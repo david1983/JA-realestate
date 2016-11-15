@@ -2,11 +2,13 @@ package uk.co.davideandreazzini.jarealestate;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -28,10 +30,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Vector;
 
 import Helpers.FilePath;
 import Models.Property;
@@ -44,11 +52,16 @@ public class PropertySellActivity extends BaseActivity {
     private String SERVER_URL = "https://www.geekmesh.com/upload.php";
     private Property prop;
     ImageView ivAttachment;
-    Button bUpload;
     TextView tvFileName;
     ProgressDialog dialog;
     String mainImageSrc = "";
     String propertyType, propertyFrequency;
+    EditText title ;
+    EditText summary;
+    EditText address;
+    EditText bedrooms;
+    EditText price;
+    TextView errorText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,19 +69,16 @@ public class PropertySellActivity extends BaseActivity {
         tvFileName = (TextView) findViewById(R.id.fileNameTxt);
         ivAttachment = (ImageView) findViewById(R.id.fileImage);
         ivAttachment.setOnClickListener(e->onClickImageUpload(ivAttachment));
-        bUpload = (Button) findViewById(R.id.btnPicture);
-        bUpload.setVisibility(View.GONE);
-        bUpload.setOnClickListener(e->onClickImageUpload(bUpload));
-
-        final EditText title = (EditText) findViewById(R.id.propertyTitle);
-        final EditText summary = (EditText) findViewById(R.id.propertySummary);
-        final EditText address = (EditText) findViewById(R.id.propertyAddress);
-        final EditText bedrooms = (EditText) findViewById(R.id.PropertyBedrooms);
-        final EditText price = (EditText) findViewById(R.id.propertyPrice);
+        errorText = (TextView) findViewById(R.id.errorText);
+        title = (EditText) findViewById(R.id.propertyTitle);
+        summary = (EditText) findViewById(R.id.propertySummary);
+        address = (EditText) findViewById(R.id.propertyAddress);
+        bedrooms = (EditText) findViewById(R.id.PropertyBedrooms);
+        price = (EditText) findViewById(R.id.propertyPrice);
 
         Button btnSave = (Button) findViewById(R.id.btnSave);
         Button btnCancel = (Button) findViewById(R.id.btnCancel);
-
+        Spinner frequencySpinner = (Spinner) findViewById(R.id.frequencySpinner);
         Spinner typeSpinner = (Spinner) findViewById(R.id.typeSpinner);
 
         ArrayAdapter<CharSequence> typeAdapter = ArrayAdapter.createFromResource(this,R.array.propertyType, android.R.layout.simple_spinner_item);
@@ -78,6 +88,7 @@ public class PropertySellActivity extends BaseActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 propertyType = adapterView.getItemAtPosition(i).toString();
+                frequencySpinner.setVisibility((propertyType.equals("BUY") ? View.GONE: View.VISIBLE));
             }
 
             @Override
@@ -85,7 +96,7 @@ public class PropertySellActivity extends BaseActivity {
                 propertyType = adapterView.getItemAtPosition(0).toString();
             }
         });
-        Spinner frequencySpinner = (Spinner) findViewById(R.id.frequencySpinner);
+
 
         ArrayAdapter<CharSequence> frequencyAdapter = ArrayAdapter.createFromResource(this,R.array.paymentFrequency, android.R.layout.simple_spinner_item);
         frequencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -101,8 +112,13 @@ public class PropertySellActivity extends BaseActivity {
                 propertyFrequency = adapterView.getItemAtPosition(0).toString();
             }
         });
+        frequencySpinner.setVisibility(View.GONE);
+
+
 
         btnSave.setOnClickListener(e->{
+
+            if(!checkFields()) return;
             Property prop = new Property();
             prop.displayAddress = address.getText().toString();
             prop.summary = summary.getText().toString();
@@ -112,13 +128,54 @@ public class PropertySellActivity extends BaseActivity {
             prop.mainImageSrc = mainImageSrc;
             prop.type = propertyType;
             prop.frequency = propertyFrequency;
+
             DatabaseReference mRef= db.mDb.getReference(propertyType);
             String key = mRef.push().getKey();
             Map<String, Object> propValues = prop.toMap();
             mRef.child(key).setValue(propValues);
+// 1. Instantiate an AlertDialog.Builder with its constructor
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            finish();
+                        }
+                    });
+// 2. Chain together various setter methods to set the dialog characteristics
+            builder.setMessage("Property successfully sent")
+                    .setTitle("Submit properties");
+
+// 3. Get the AlertDialog from create()
+            AlertDialog dialog = builder.create();
+            dialog.show();
+
         });
 
 
+    }
+
+    private boolean checkFields(){
+        HashMap<String, EditText>  map = new HashMap();
+        map.put("title", title);
+        map.put("summary", summary);
+        map.put("address", address);
+        map.put("price", price);
+        map.put("bedrooms", bedrooms);
+        String errorMsg;
+        Iterator<String> keySetIterator = map.keySet().iterator();
+        while(keySetIterator.hasNext()){
+            String key = keySetIterator.next();
+            if(map.get(key).getText().toString().equals("")){
+                errorText.setVisibility(View.VISIBLE);
+                errorMsg = "The field " + key + " is mandatory";
+                errorText.setText(errorMsg);
+                Toast.makeText(PropertySellActivity.this,errorMsg,Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            System.out.println("key: " + key + " value: " + map.get(key));
+        }
+
+
+        return true;
     }
 
 
@@ -127,24 +184,6 @@ public class PropertySellActivity extends BaseActivity {
 
             //on attachment icon click
             showFileChooser();
-        }
-        if(v== bUpload){
-
-            //on upload button Click
-            if(selectedFilePath != null){
-                dialog = ProgressDialog.show(PropertySellActivity.this,"","Uploading File...",true);
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //creating new thread to handle Http Operations
-                        uploadFile(selectedFilePath);
-                    }
-                }).start();
-            }else{
-                Toast.makeText(PropertySellActivity.this,"Please choose a File First",Toast.LENGTH_SHORT).show();
-            }
-
         }
     }
 

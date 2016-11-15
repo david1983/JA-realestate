@@ -16,11 +16,11 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
+
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import fragments.StartFragment;
-import fragments.googleSignIn;
+
 
 
 public class LoginActivity extends BaseActivity  implements GoogleApiClient.OnConnectionFailedListener{
@@ -95,6 +95,7 @@ public class LoginActivity extends BaseActivity  implements GoogleApiClient.OnCo
                             Toast.makeText(getApplicationContext(), "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
                         }else{
+                            user = db.mAuth.getCurrentUser();
                             Toast.makeText(getApplicationContext(), "You are authenticated",
                                     Toast.LENGTH_SHORT).show();
 //                            Intent intent = new Intent(getApplicationContext(), RootActivity.class);

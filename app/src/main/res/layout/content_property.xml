@@ -22,17 +22,19 @@
                 <ImageView
                     android:id="@+id/PropertyMainImg"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:scaleType="fitXY"
+                    android:layout_height="287dp"
+                    android:scaleType="centerCrop"
                     android:src="@drawable/house"
                     android:adjustViewBounds="true"/>
                 <TextView
-                    android:layout_gravity="bottom"
+                    android:layout_gravity="top"
                     android:id="@+id/PropertyTitle"
                     android:padding="16dp"
                     android:textColor="#fff"
                     android:textSize="25dp"
                     android:shadowColor="#333"
+                    android:shadowDx="3"
+                    android:shadowRadius="5"
                     android:textStyle="bold"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -85,6 +87,27 @@
                             android:id="@+id/PropertyPrice"/>
                     </TableRow>
                 </TableLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <Button
+                    android:text="Phone"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnPhone"
+                    android:drawableLeft="@drawable/ic_phone_black_24px"
+                    android:layout_weight="1" />
+
+                <Button
+                    android:text="Email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/btnEmail"
+                    android:drawableRight="@drawable/ic_mail_outline_black_24px"
+                    android:layout_weight="1" />
             </LinearLayout>
 
         </LinearLayout>

@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,9 +40,10 @@ import rx.subjects.Subject;
 
 public class BaseActivity extends FirebaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
     ArrayList<IntentExtras> intentExtras = new ArrayList<>();
-    Subject<FirebaseUser, FirebaseUser> mObservable = PublishSubject.create();
     Boolean drawerOn;
+    Menu mMenu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +64,31 @@ public class BaseActivity extends FirebaseActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        mMenu = navigationView.getMenu();
+        user = db.mAuth.getCurrentUser();
+        drawer.addDrawerListener(new DrawerLayout.DrawerListener() {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                setUserDrawer(user);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                setUserDrawer(user);
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+                setUserDrawer(user);
+            }
+        });
+
+
     }
 
 
@@ -85,7 +112,6 @@ public class BaseActivity extends FirebaseActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        setUserDrawer(user);
         return true;
     }
 
@@ -94,12 +120,21 @@ public class BaseActivity extends FirebaseActivity
         ImageView userImg = (ImageView) findViewById(R.id.userImage);
         TextView username = (TextView) findViewById(R.id.userName);
         TextView useremail = (TextView) findViewById(R.id.userEmail);
+
+        MenuItem login = mMenu.findItem(R.id.nav_login);
+        MenuItem logout = mMenu.findItem(R.id.nav_logout);
+
         if(user==null) {
+            if(logout!=null)logout.setVisible(false);
+            if(login!=null)login.setVisible(true);
+
             userImg.setVisibility(View.GONE);
             username.setVisibility(View.GONE);
             useremail.setVisibility(View.GONE);
             return;
         }else{
+            if(logout!=null)logout.setVisible(true);
+            if(login!=null)login.setVisible(false);
             userImg.setVisibility(View.VISIBLE);
             username.setVisibility(View.VISIBLE);
             useremail.setVisibility(View.VISIBLE);
@@ -158,13 +193,11 @@ public class BaseActivity extends FirebaseActivity
         } else if (id == R.id.nav_home) {
             goTo(new MainActivity(),null);
         } else if (id == R.id.nav_login) {
-            if(user==null){
-                goTo(new LoginActivity(), null);
-            }else{
-                db.mAuth.signOut();
-                user = null;
-                setUserDrawer(null);
-            }
+            goTo(new LoginActivity(), null);
+        } else if(id==R.id.nav_logout){
+            db.mAuth.signOut();
+            user = null;
+            setUserDrawer(null);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -175,6 +208,14 @@ public class BaseActivity extends FirebaseActivity
     @Override
     public void onStart() {
         super.onStart();
+        user = db.mAuth.getCurrentUser();
+        setUserDrawer(user);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        user = db.mAuth.getCurrentUser();
         setUserDrawer(user);
     }
 }

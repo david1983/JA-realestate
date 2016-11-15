@@ -17,7 +17,7 @@
         <item
             android:id="@+id/nav_sell"
             android:icon="@drawable/shop"
-            android:title="Sell properties" />
+            android:title="Submit properties" />
         <item
             android:id="@+id/nav_map"
             android:icon="@drawable/map"
@@ -32,7 +32,7 @@
                 android:title="Login" />
             <item
                 android:id="@+id/nav_logout"
-                android:icon="@android:drawable/ic_menu_myplaces"
+                android:icon="@drawable/logout"
                 android:title="Logout" />
         </menu>
     </item>

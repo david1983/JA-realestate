@@ -19,12 +19,26 @@
         android:layout_alignParentStart="true">
 
         <TextView
-            android:text="Sell a Property"
+            android:text="Submit a Property"
+            android:textSize="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:id="@+id/textView" />
+
+        <TextView
+            android:visibility="gone"
+            android:padding="10dp"
+            android:textAlignment="center"
+            android:text="Error"
+            android:textSize="19dp"
+            android:textColor="#d00"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/errorText" />
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/title_property_layout"
@@ -78,7 +92,7 @@
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/frequencySpinner" />
+                    android:id="@+id/typeSpinner" />
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/price_property_layout"
                     android:layout_weight="1"
@@ -117,16 +131,11 @@
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/typeSpinner" />
+                    android:id="@+id/frequencySpinner" />
+
             </TableRow>
         </TableLayout>
 
-        <Button
-            android:text="Upload picture"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnPicture"
-            android:layout_weight="1" />
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="100dp"

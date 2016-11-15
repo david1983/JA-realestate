@@ -19,9 +19,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 
 
-/**
- * Created by david on 04/10/2016.
- */
 
 public class LoginFragment extends routedFragment {
     int state;

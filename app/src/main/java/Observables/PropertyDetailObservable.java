@@ -13,7 +13,7 @@ import rx.Observable;
 import rx.Subscriber;
 
 /**
- * Created by ic3 on 06/11/16.
+ * PropertyDetailObservable is used to get the details of a property
  */
 
 public class PropertyDetailObservable implements Observable.OnSubscribe<Property> {
@@ -23,15 +23,23 @@ public class PropertyDetailObservable implements Observable.OnSubscribe<Property
 
     public PropertyDetailObservable(String collection, String key) {
         this.collection = collection;
+        //Set the database reference to the given key
         dbRef = db.mDb.getReference(collection).child(key);
     }
 
 
     @Override
     public void call(Subscriber<? super Property> subscriber) {
+
+        // Add a valueEvent listener when the Observer subscrive
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                /**
+                 * when the data change (Async) generate a Property object from the Firebase snapShot
+                 * and return it to the onNext call of the subscriber, after that terminate the subscriber connection.
+                 */
+
                 Property prop = Property.fromSnapShot(dataSnapshot, collection);
                 subscriber.onNext(prop);
                 subscriber.onCompleted();
@@ -39,7 +47,7 @@ public class PropertyDetailObservable implements Observable.OnSubscribe<Property
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.e("Error", databaseError.getMessage());
+                // Terminate the subscriber connection in case of databaseError in order to avoid memory leaks
                 subscriber.unsubscribe();
             }
         });

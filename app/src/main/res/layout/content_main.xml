@@ -17,14 +17,24 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="25dp"
+                android:textStyle="bold"
+                android:text="Welcome to JA real estate"/>
+
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <VideoView
                     android:layout_gravity="center"
                     android:layout_width="match_parent"
-                    android:layout_height="500dp"
+
+                    android:layout_height="wrap_content"
                     android:id="@+id/videoView" />
+                <!--android:layout_height="500dp"-->
                 <ImageView
                     android:layout_gravity="bottom|right"
                     android:layout_width="80dp"
@@ -39,6 +49,15 @@
                 android:layout_height="wrap_content">
 
 
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20dp"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:textStyle="bold"
+                    android:text="Looking for your new home ?"/>
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
@@ -46,6 +65,8 @@
 
                     <Button
                         android:text="BUY"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:textColor="#fff"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/buyBtn"
@@ -53,11 +74,42 @@
 
                     <Button
                         android:text="RENT"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:textColor="#fff"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/rentBtn"
                         android:layout_weight="1" />
                 </LinearLayout>
+
+
+                <Space
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="10dp"
+                    android:text="We are always looking for new properties to buy or rent, and we would like hearing from you"/>
+                <Button
+                    android:text="SUBMIT A PROPERTY"
+                    android:backgroundTint="@color/colorAccent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/submitBtn"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="25dp"
+                    android:textStyle="bold"
+                    android:text="About us"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/real_estate_about_us"/>
             </LinearLayout>
         </LinearLayout>
 

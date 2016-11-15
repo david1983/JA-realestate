@@ -18,6 +18,16 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_property_detail">PropertyDetailActivity</string>
     <string name="title_activity_properties_map">Map</string>
+    <string name="real_estate_about_us">\nJA Real Estate is the premiere real estate agency on Kingston on Thames specializing in quality and waterfront homes.\n\n
+        For over 35 years we have been proud to represent the best the area has to offer, in doing so, help countless families find the homes of their dreams. \n\n
+        We have an outstanding group of full time professional sales associates at your service. JA Real Estate offers sellers and buyers services that include:
+\n\n· Multiple Listing Service
+\n· Full Broker Services
+\n· Buyer representation/Seller representation
+\n· Residential, multi-family, rural, commercial
+\n· We buy homes and land for cash
+
+</string>
     <string-array name="propertyType">
         <item>BUY</item>
         <item>RENT</item>

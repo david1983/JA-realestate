@@ -7,13 +7,16 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
 /**
- * Created by ic3 on 06/11/16.
+ * FirebaseH is the Firebase Database Handler
+ * is a singleton object so it can only be only one instance of this oobject
+ * the instance is shared accross the application avoiding the generation
+ * of new objects and pollution of the garbage collector
+ *
  */
 public class FirebaseH {
     public FirebaseDatabase mDb;
     public FirebaseAuth mAuth;
     public FirebaseAuth.AuthStateListener mAuthListener;
-    public FirebaseUser user;
 
     private static FirebaseH ourInstance = new FirebaseH();
 

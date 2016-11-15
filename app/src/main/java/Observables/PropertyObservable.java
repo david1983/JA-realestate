@@ -16,7 +16,7 @@ import rx.Observable;
 import rx.Subscriber;
 
 /**
- * Created by ic3 on 05/11/16.
+ * PropertyObservable retrieves a list of properties
  */
 
 public class PropertyObservable implements Observable.OnSubscribe<ArrayList<Property>> {
@@ -52,6 +52,8 @@ public class PropertyObservable implements Observable.OnSubscribe<ArrayList<Prop
         }
     }
 
+
+
     private ValueEventListener handleValueChanges(Subscriber<? super ArrayList<Property>> subscriber){
         final ArrayList<Property> arrProperty = new ArrayList<Property>();
         ValueEventListener vel = new ValueEventListener() {
@@ -69,7 +71,7 @@ public class PropertyObservable implements Observable.OnSubscribe<ArrayList<Prop
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.e("Error", databaseError.getMessage());
+                // Terminate the subscriber connection in case of databaseError in order to avoid memory leaks
                 subscriber.unsubscribe();
             }
         };

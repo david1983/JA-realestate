@@ -74,7 +74,7 @@ public class MapActivity extends BaseActivity {
                             prop.key = propSnapshot.getKey();
                             prop.type=type;
                             prop.setCoords(prop.parseCoord(propSnapshot.child("lat")), prop.parseCoord(propSnapshot.child("lng")));
-                            if(!prop.coords.equals(new LatLng(0,0)))
+                            if(prop.coords!=null && !prop.coords.equals(new LatLng(0,0)))
                                 arrProp.add(prop);
                         }
                         subscriber.onNext(arrProp);

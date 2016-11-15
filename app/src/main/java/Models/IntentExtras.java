@@ -1,7 +1,8 @@
 package Models;
 
 /**
- * Created by ic3 on 05/11/16.
+ * IntentExtras objects are used to pass values between activities
+ *
  */
 
 public class IntentExtras {
