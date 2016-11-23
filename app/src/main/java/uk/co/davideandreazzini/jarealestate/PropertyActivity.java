@@ -1,6 +1,5 @@
 package uk.co.davideandreazzini.jarealestate;
 
-import android.*;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,12 +9,10 @@ import android.os.Bundle;
 
 import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,7 +23,7 @@ import Observables.PropertyDetailObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class PropertyActivity extends FirebaseActivity {
+public class PropertyActivity extends BaseActivity {
 
     Property mProp;
     @Override

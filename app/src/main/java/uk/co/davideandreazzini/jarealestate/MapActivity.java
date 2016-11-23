@@ -3,9 +3,7 @@ package uk.co.davideandreazzini.jarealestate;
 import android.annotation.SuppressLint;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.util.Log;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -29,7 +27,7 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class MapActivity extends BaseActivity {
+public class MapActivity extends DrawerActivity {
     GoogleMap map;
 
     private class propMarker{

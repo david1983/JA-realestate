@@ -3,7 +3,6 @@ package uk.co.davideandreazzini.jarealestate;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -14,7 +13,7 @@ import Observables.PropertyObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class PropertiesActivity extends BaseActivity {
+public class PropertiesActivity extends DrawerActivity {
     String propertyType;
     ArrayList<Property> myValues = new ArrayList<>();
     RecyclerViewAdapter adapter = new RecyclerViewAdapter(myValues, this);

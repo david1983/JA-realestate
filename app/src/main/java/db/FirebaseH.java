@@ -8,8 +8,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * FirebaseH is the Firebase Database Handler
- * is a singleton object so it can only be only one instance of this oobject
- * the instance is shared accross the application avoiding the generation
+ * is a singleton object so it can only be instanced once.
+ * the instance is shared across the application avoiding the generation
  * of new objects and pollution of the garbage collector
  *
  */

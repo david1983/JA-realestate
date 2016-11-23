@@ -77,6 +77,7 @@ public class StartFragment extends routedFragment {
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "facebook:onSuccess:" + loginResult);
                 handleFacebookAccessToken(loginResult.getAccessToken());
+                getActivity().finish();
             }
 
             @Override
@@ -88,7 +89,8 @@ public class StartFragment extends routedFragment {
             @Override
             public void onError(FacebookException error) {
                 Log.d(TAG, "facebook:onError", error);
-                // ...
+                Toast.makeText(getActivity(), "Authentication failed. " + error.toString(),
+                        Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -23,7 +23,7 @@ import fragments.StartFragment;
 
 
 
-public class LoginActivity extends BaseActivity  implements GoogleApiClient.OnConnectionFailedListener{
+public class LoginActivity extends DrawerActivity implements GoogleApiClient.OnConnectionFailedListener{
 
     GoogleApiClient mGoogleApiClient;
     static final int RC_SIGN_IN = 0;

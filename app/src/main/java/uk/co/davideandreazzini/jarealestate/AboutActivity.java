@@ -2,7 +2,7 @@ package uk.co.davideandreazzini.jarealestate;
 
 import android.os.Bundle;
 
-public class AboutActivity extends BaseActivity {
+public class AboutActivity extends DrawerActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
