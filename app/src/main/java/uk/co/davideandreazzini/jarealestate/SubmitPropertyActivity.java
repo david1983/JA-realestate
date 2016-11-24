@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -33,15 +34,17 @@ import java.util.Iterator;
 import java.util.Map;
 
 import Helpers.FilePath;
-import Models.Property;
+import Helpers.ImgUtils;
+import Objects.Property;
 
-public class PropertySellActivity extends DrawerActivity {
+public class SubmitPropertyActivity extends DrawerActivity {
 
     private static final int PICK_FILE_REQUEST = 1;
     private static final String TAG = MainActivity.class.getSimpleName();
     private String selectedFilePath;
+    // url that handles the file upload
     private String SERVER_URL = "https://www.geekmesh.com/upload.php";
-    private Property prop;
+
     ImageView ivAttachment;
     TextView tvFileName;
     ProgressDialog dialog;
@@ -53,10 +56,12 @@ public class PropertySellActivity extends DrawerActivity {
     EditText bedrooms;
     EditText price;
     TextView errorText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setView(R.layout.content_property_sell);
+
         tvFileName = (TextView) findViewById(R.id.fileNameTxt);
         ivAttachment = (ImageView) findViewById(R.id.fileImage);
         ivAttachment.setOnClickListener(e->onClickImageUpload(ivAttachment));
@@ -68,7 +73,6 @@ public class PropertySellActivity extends DrawerActivity {
         price = (EditText) findViewById(R.id.propertyPrice);
 
         Button btnSave = (Button) findViewById(R.id.btnSave);
-        Button btnCancel = (Button) findViewById(R.id.btnCancel);
         Spinner frequencySpinner = (Spinner) findViewById(R.id.frequencySpinner);
         Spinner typeSpinner = (Spinner) findViewById(R.id.typeSpinner);
 
@@ -107,6 +111,7 @@ public class PropertySellActivity extends DrawerActivity {
 
 
 
+        // save a property in the database
         btnSave.setOnClickListener(e->{
 
             if(!checkFields()) return;
@@ -121,21 +126,23 @@ public class PropertySellActivity extends DrawerActivity {
             prop.frequency = propertyFrequency;
 
             DatabaseReference mRef= db.mDb.getReference(propertyType);
+            // create a new record in the db and get the id
             String key = mRef.push().getKey();
+            // create an hashMap from the Property Object
             Map<String, Object> propValues = prop.toMap();
             mRef.child(key).setValue(propValues);
-// 1. Instantiate an AlertDialog.Builder with its constructor
+            // Instantiate an AlertDialog.Builder with its constructor
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             finish();
                         }
                     });
-// 2. Chain together various setter methods to set the dialog characteristics
+            // Chain together various setter methods to set the dialog characteristics
             builder.setMessage("Property successfully sent")
                     .setTitle("Submit properties");
 
-// 3. Get the AlertDialog from create()
+            // Get the AlertDialog from create()
             AlertDialog dialog = builder.create();
             dialog.show();
 
@@ -145,6 +152,7 @@ public class PropertySellActivity extends DrawerActivity {
     }
 
     private boolean checkFields(){
+        // check required fields using a map
         HashMap<String, EditText>  map = new HashMap();
         map.put("title", title);
         map.put("summary", summary);
@@ -152,6 +160,8 @@ public class PropertySellActivity extends DrawerActivity {
         map.put("price", price);
         map.put("bedrooms", bedrooms);
         String errorMsg;
+        // iterate over the map, if the field is equal ""
+        // show the error in the error message
         Iterator<String> keySetIterator = map.keySet().iterator();
         while(keySetIterator.hasNext()){
             String key = keySetIterator.next();
@@ -159,20 +169,16 @@ public class PropertySellActivity extends DrawerActivity {
                 errorText.setVisibility(View.VISIBLE);
                 errorMsg = "The field " + key + " is mandatory";
                 errorText.setText(errorMsg);
-                Toast.makeText(PropertySellActivity.this,errorMsg,Toast.LENGTH_SHORT).show();
+                Toast.makeText(SubmitPropertyActivity.this,errorMsg,Toast.LENGTH_SHORT).show();
                 return false;
             }
-            System.out.println("key: " + key + " value: " + map.get(key));
         }
-
-
         return true;
     }
 
 
     public void onClickImageUpload(View v) {
         if(v== ivAttachment){
-
             //on attachment icon click
             showFileChooser();
         }
@@ -197,17 +203,15 @@ public class PropertySellActivity extends DrawerActivity {
                     //no data present
                     return;
                 }
-
-
                 Uri selectedFileUri = data.getData();
+                // FilePath.getPath is a static method and
+                // return the file path of Gallery image/ Document / Video / Audio
                 selectedFilePath = FilePath.getPath(this,selectedFileUri);
-                Log.i(TAG,"Selected File Path:" + selectedFilePath);
-
                 if(selectedFilePath != null && !selectedFilePath.equals("")){
                     tvFileName.setText(selectedFilePath);
                     //on upload button Click
                     if(selectedFilePath != null){
-                        dialog = ProgressDialog.show(PropertySellActivity.this,"","Uploading File...",true);
+                        dialog = ProgressDialog.show(SubmitPropertyActivity.this,"","Uploading File...",true);
 
                         new Thread(new Runnable() {
                             @Override
@@ -217,7 +221,7 @@ public class PropertySellActivity extends DrawerActivity {
                             }
                         }).start();
                     }else{
-                        Toast.makeText(PropertySellActivity.this,"Please choose a File First",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SubmitPropertyActivity.this,"Please choose a File First",Toast.LENGTH_SHORT).show();
                     }
                 }else{
                     Toast.makeText(this,"Cannot upload file to server",Toast.LENGTH_SHORT).show();
@@ -226,7 +230,7 @@ public class PropertySellActivity extends DrawerActivity {
         }
     }
 
-    //android upload file to server
+    // upload file to server
     public int uploadFile(final String selectedFilePath){
 
         int serverResponseCode = 0;
@@ -314,7 +318,9 @@ public class PropertySellActivity extends DrawerActivity {
                         @Override
                         public void run() {
                             mainImageSrc = "https://geekmesh.com/uploads/" + fileName;
-                            tvFileName.setText("File Upload completed.\n\n You can see the uploaded file here: \n\n" + "http://coderefer.com/extras/uploads/"+ fileName);
+                            Bitmap img = ImgUtils.loadBitmap(mainImageSrc);
+                            ivAttachment.setImageBitmap(img);
+                            tvFileName.setText("File Upload completed.");
                         }
                     });
                 }
@@ -331,16 +337,16 @@ public class PropertySellActivity extends DrawerActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(PropertySellActivity.this,"File Not Found", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SubmitPropertyActivity.this,"File Not Found", Toast.LENGTH_SHORT).show();
                     }
                 });
             } catch (MalformedURLException e) {
                 e.printStackTrace();
-                Toast.makeText(PropertySellActivity.this, "URL error!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SubmitPropertyActivity.this, "URL error!", Toast.LENGTH_SHORT).show();
 
             } catch (IOException e) {
                 e.printStackTrace();
-                Toast.makeText(PropertySellActivity.this, "Cannot Read/Write File!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SubmitPropertyActivity.this, "Cannot Read/Write File!", Toast.LENGTH_SHORT).show();
             }
             dialog.dismiss();
             return serverResponseCode;

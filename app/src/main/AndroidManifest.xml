@@ -50,12 +50,8 @@
             android:label="@string/title_activity_property"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".PropertySellActivity"
+            android:name=".SubmitPropertyActivity"
             android:label="@string/title_activity_property_sell"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".AboutActivity"
-            android:label="@string/title_activity_about"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".LoginActivity"

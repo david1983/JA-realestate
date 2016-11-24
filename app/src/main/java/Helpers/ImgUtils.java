@@ -10,11 +10,11 @@ import java.net.URL;
 import db.FirebaseH;
 
 /**
- * Utility library to download image file from the web
+ * Utils class is used to download image file from the web
  * and cache them for future use
  */
 
-public class utils {
+public class ImgUtils {
 
     /**
      * memoryCache is a singleton object, it handles the cache of downloaded images

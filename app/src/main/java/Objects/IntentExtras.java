@@ -1,4 +1,4 @@
-package Models;
+package Objects;
 
 /**
  * IntentExtras objects are used to pass values between activities

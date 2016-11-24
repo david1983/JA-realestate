@@ -18,15 +18,11 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.ArrayList;
-
-import Helpers.utils;
-import Models.IntentExtras;
+import Helpers.ImgUtils;
 
 public class DrawerActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    ArrayList<IntentExtras> intentExtras = new ArrayList<>();
     Boolean drawerOn;
     Menu mMenu;
     @Override
@@ -129,7 +125,7 @@ public class DrawerActivity extends BaseActivity
 
             useremail.setText(user.getEmail());
             if(photoUrl != null){
-                userImg.setImageBitmap(utils.loadBitmap(photoUrl.toString()));
+                userImg.setImageBitmap(ImgUtils.loadBitmap(photoUrl.toString()));
             }
         }
 
@@ -152,13 +148,14 @@ public class DrawerActivity extends BaseActivity
         return super.onOptionsItemSelected(item);
     }
 
-    public void goToProperties(String type){
-        intentExtras.clear();
-        intentExtras.add(new IntentExtras("propType", type));
-        goTo(new PropertiesActivity(),intentExtras);
-    }
 
-
+    /**
+     * When the user click on a menuitem in the drawer, this is passed
+     * to the onNavigationItemSelected method.
+     * the method manage the navigation
+     * @param item
+     * @return
+     */
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -168,24 +165,32 @@ public class DrawerActivity extends BaseActivity
         intentExtras.clear();
 
         if (id == R.id.nav_buy) {
+            //redirect to buy properties view
             goToProperties("BUY");
         } else if (id == R.id.nav_rent) {
+            //redirect to rent properties view
             goToProperties("RENT");
         } else if (id == R.id.nav_sell) {
-            goTo(new PropertySellActivity(), null);
+            //redirect to submit properties view
+            goTo(new SubmitPropertyActivity(), null);
         } else if (id == R.id.nav_map) {
+            //redirect to map view
             goTo(new MapActivity(),null);
         } else if (id == R.id.nav_home) {
+            //redirect to home
             goTo(new MainActivity(),null);
         } else if (id == R.id.nav_login) {
+            //redirect to login view
             goTo(new LoginActivity(), null);
         } else if(id==R.id.nav_logout){
+            //logout the user
             db.mAuth.signOut();
             user = null;
             setUserDrawer(null);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        // here the Drawer is closed
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

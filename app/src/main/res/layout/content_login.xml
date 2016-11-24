@@ -8,11 +8,6 @@
     android:padding="16dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="login" />
-
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"

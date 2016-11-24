@@ -9,19 +9,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.google.gson.Gson;
 import java.util.ArrayList;
-import Models.IntentExtras;
-import Models.Property;
-
-/**
- * Created by davide on 04/11/16.
- */
+import Objects.IntentExtras;
+import Objects.Property;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    public ArrayList<Property> myValues;
+    public ArrayList<Property> propertiesArray;
     private final PropertiesActivity mActivity;
 
-    public RecyclerViewAdapter (ArrayList<Property> myValues, PropertiesActivity mActivity){
-        this.myValues= myValues;
+    public RecyclerViewAdapter (ArrayList<Property> propertiesArray, PropertiesActivity mActivity){
+        this.propertiesArray= propertiesArray;
         this.mActivity = mActivity;
     }
     private static final int FOOTER_VIEW = 1;
@@ -34,21 +30,20 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             return new FooterViewHolder(listItem);
         }else{
             listItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardview, parent, false);
-            return new CardHoler(listItem);
+            return new CardHolder(listItem);
         }
-
-
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         try {
-            if (holder instanceof CardHoler) {
-                Gson gson = new Gson();
-                CardHoler vh = (CardHoler) holder;
-                Property prop = myValues.get(position);
+            if (holder instanceof CardHolder) {
+                // if the holder is of type CardHolder render the card UI
+                CardHolder vh = (CardHolder) holder;
+                Property prop = propertiesArray.get(position);
                 String propTitle = prop.propertyTypeFullDescription + " " + prop.displayAmount;
                 vh.myTextView.setText(propTitle);
+                // onClick on the button redirect to the PropertyDetail
                 vh.propDetailsBtn.setOnClickListener(e->{
                     ArrayList<IntentExtras> extras = new ArrayList<IntentExtras>();
                     extras.add(new IntentExtras("property", prop.key));
@@ -58,8 +53,9 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 if(prop.bmp!=null){
                     vh.propertyImage.setImageBitmap(prop.bmp);
                 }
-//                holder.itemView.setOnClickListener(e-> Log.d("d", myValues.get(position).propertyTypeFullDescription));
             } else if (holder instanceof FooterViewHolder) {
+                // if the holder is an instance of FooterViewHolder
+                // render the Footer UI, button for loadMore
                 FooterViewHolder vh = (FooterViewHolder) holder;
                 vh.loadMoreBtn.setOnClickListener(e->mActivity.loadMore());
             }
@@ -72,13 +68,14 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemCount() {
-        return myValues.size()+1;
+        return propertiesArray.size()+1;
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position == myValues.size()) {
-            // This is where we'll add footer.
+        if (position == propertiesArray.size()) {
+            // if the position is the end of the array return the value
+            // of the FOOTER_VIEW
             return FOOTER_VIEW;
         }
 
@@ -86,17 +83,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-
         public MyViewHolder(View itemView) {
             super(itemView);
         }
     }
 
-    public class CardHoler extends MyViewHolder {
+    public class CardHolder extends MyViewHolder {
         private TextView myTextView;
         private ImageView propertyImage;
         private Button propDetailsBtn;
-        public CardHoler(View itemView) {
+        public CardHolder(View itemView) {
             super(itemView);
             myTextView = (TextView)itemView.findViewById(R.id.text_cardview);
             propertyImage = (ImageView) itemView.findViewById(R.id.property_image);

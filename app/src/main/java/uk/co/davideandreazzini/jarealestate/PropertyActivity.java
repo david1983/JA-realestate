@@ -18,12 +18,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import Models.Property;
+import Objects.Property;
 import Observables.PropertyDetailObservable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class PropertyActivity extends BaseActivity {
+    sharingContent sContent;
 
     Property mProp;
     @Override
@@ -33,15 +34,20 @@ public class PropertyActivity extends BaseActivity {
         setToolbar();
         String propKey = getIntent().getStringExtra("property");
         String collection = getIntent().getStringExtra("collection");
+
+        // Get the data from the observable
         PropertyDetailObservable pdo = new PropertyDetailObservable(collection,propKey);
         rx.Observable.create(pdo)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(property->{
-                    Log.d("d", property.toString());
                     setPropertyUI(property);
+                },error->{
+                    Log.e("ERROR", error.getMessage());
                 });
 
+        // set the phone button to initiate a call to the company number
+        // a fake number has been set
         Button btnPhone = (Button) findViewById(R.id.btnPhone);
         btnPhone.setOnClickListener(e->{
             Intent callIntent = new Intent(Intent.ACTION_CALL);
@@ -56,11 +62,13 @@ public class PropertyActivity extends BaseActivity {
             }
 
         });
+
+        // set the email button to start an ACTION_SEND intent
         Button btnEmail = (Button) findViewById(R.id.btnEmail);
         btnEmail.setOnClickListener(e->{
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("message/rfc822");
-            i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"info@geekmesh.com"});
+            i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"davide.andreazzini@northumbria.ac.uk"});
             i.putExtra(Intent.EXTRA_SUBJECT, "Info about:" + mProp.propertyTypeFullDescription);
             i.putExtra(Intent.EXTRA_TEXT   , "");
             try {
@@ -70,39 +78,15 @@ public class PropertyActivity extends BaseActivity {
             }
         });
 
+        // set the floating button to start a share intent
         FloatingActionButton fab = (FloatingActionButton) findViewById(uk.co.davideandreazzini.jarealestate.R.id.fab);
         fab.setOnClickListener(e->shareContent());
     }
-
-    protected void setPropertyUI(Property prop){
-        mProp = prop;
-        TextView title = (TextView) findViewById(R.id.PropertyTitle);
-        TextView summary = (TextView) findViewById(R.id.PropertySummary);
-        TextView address = (TextView) findViewById(R.id.PropertyAddress);
-        TextView bedrooms = (TextView) findViewById(R.id.PropertyBedrooms);
-        TextView price = (TextView) findViewById(R.id.PropertyPrice);
-        TextView type = (TextView) findViewById(R.id.PropertyType);
-        ImageView img = (ImageView) findViewById(R.id.PropertyMainImg);
-
-        img.setImageBitmap(prop.bmp);
-
-        title.setText(prop.propertyTypeFullDescription);
-        summary.setText( prop.summary);
-        address.setText("Address: " + prop.displayAddress);
-        price.setText("Price: " + prop.displayAmount);
-        bedrooms.setText("N. of bedrooms:" + prop.bedrooms);
-        type.setText("Type: "+ prop.type);
-
-        setSharedContent(prop.propertyTypeFullDescription, prop.summary, prop.bmp);
-    }
-
 
     private class sharingContent{
         String subj, text;
         Bitmap image;
     }
-
-    sharingContent sContent;
 
     public void setSharedContent(String subj, String text, Bitmap image){
         sContent = new sharingContent();
@@ -136,5 +120,34 @@ public class PropertyActivity extends BaseActivity {
         }
 
     }
+
+    /**
+     * setPropertyUI is responsible to setup the UI using the property data
+     * @param prop
+     */
+    protected void setPropertyUI(Property prop){
+        mProp = prop;
+        TextView title = (TextView) findViewById(R.id.PropertyTitle);
+        TextView summary = (TextView) findViewById(R.id.PropertySummary);
+        TextView address = (TextView) findViewById(R.id.PropertyAddress);
+        TextView bedrooms = (TextView) findViewById(R.id.PropertyBedrooms);
+        TextView price = (TextView) findViewById(R.id.PropertyPrice);
+        TextView type = (TextView) findViewById(R.id.PropertyType);
+        ImageView img = (ImageView) findViewById(R.id.PropertyMainImg);
+
+        img.setImageBitmap(prop.bmp);
+
+        title.setText(prop.propertyTypeFullDescription);
+        summary.setText( prop.summary);
+        address.setText("Address: " + prop.displayAddress);
+        price.setText("Price: " + prop.displayAmount);
+        bedrooms.setText("N. of bedrooms:" + prop.bedrooms);
+        type.setText("Type: "+ prop.type);
+
+        setSharedContent(prop.propertyTypeFullDescription, prop.summary, prop.bmp);
+    }
+
+
+
 
 }

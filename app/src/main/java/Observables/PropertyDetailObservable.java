@@ -1,13 +1,11 @@
 package Observables;
 
-import android.util.Log;
-
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
-import Models.Property;
+import Objects.Property;
 import db.FirebaseH;
 import rx.Observable;
 import rx.Subscriber;

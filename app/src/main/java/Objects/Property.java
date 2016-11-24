@@ -1,4 +1,4 @@
-package Models;
+package Objects;
 
 import android.graphics.Bitmap;
 
@@ -10,14 +10,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import Helpers.utils;
+import Helpers.ImgUtils;
 
 /**
- * Property objects defines the properties managed by the real estate
+ * Property objects defines a property managed by the real estate
  */
 public class Property {
 
-    public String type,displayAddress, summary, propertyTypeFullDescription, mainImageSrc,transactionType,propertySubType,key,frequency,displayAmount;
+    public String type,displayAddress, summary, propertyTypeFullDescription,
+            mainImageSrc,transactionType,propertySubType,key,frequency,displayAmount;
     public long amount;
     public ArrayList<String> images;
     public int bedrooms;
@@ -63,10 +64,11 @@ public class Property {
      * @return
      */
     public static Property fromSnapShot(DataSnapshot snapshot, String collection){
+        // create a Property object through reflection
         Property prop = snapshot.getValue(Property.class);
         prop.key = snapshot.getKey();
         if(prop.mainImageSrc!=null){
-            prop.bmp = utils.loadBitmap(prop.mainImageSrc);
+            prop.bmp = ImgUtils.loadBitmap(prop.mainImageSrc);
         }
         prop.type=collection;
         return prop;

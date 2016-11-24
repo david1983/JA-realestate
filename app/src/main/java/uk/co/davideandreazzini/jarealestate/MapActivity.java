@@ -20,8 +20,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import Models.IntentExtras;
-import Models.Property;
+import Objects.IntentExtras;
+import Objects.Property;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
